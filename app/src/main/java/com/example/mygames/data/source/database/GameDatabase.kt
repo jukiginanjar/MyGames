@@ -1,9 +1,9 @@
 package com.example.mygames.data.source.database
 
-import androidx.room.*
+import androidx.room.Database
+import androidx.room.RoomDatabase
 
 @Database(entities = [FavoriteGameEntity::class], version = 1)
-@TypeConverters(FavoriteGameConverters::class)
 abstract class GameDatabase : RoomDatabase() {
     abstract fun favorite(): FavoriteGameDao
 }

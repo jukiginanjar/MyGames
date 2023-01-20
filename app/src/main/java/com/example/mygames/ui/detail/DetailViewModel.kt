@@ -19,13 +19,12 @@ class DetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<DetailUiState>(DetailUiState.Loading)
     val uiState: StateFlow<DetailUiState> = _uiState
 
-    private var isFavorite = false
-
     fun getGameDetail(gameId: Int) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.value = DetailUiState.Loading
             try {
                 val result = gameRepository.getGameDetail(gameId)
+                val isFavorite = gameRepository.isFavoriteGame(gameId)
                 _uiState.value = DetailUiState.Loaded(result, isFavorite)
             } catch (e: Throwable) {
                 _uiState.value = DetailUiState.LoadError(e.message ?: "Error")
@@ -36,7 +35,18 @@ class DetailViewModel @Inject constructor(
     fun toggleFavorite() {
         val loadedState = _uiState.value as? DetailUiState.Loaded
         loadedState?.apply {
-            _uiState.value = DetailUiState.Loaded(gameDetail, !isFavorite)
+            viewModelScope.launch(dispatcherProvider.io) {
+                try {
+                    if (isFavorite) {
+                        gameRepository.deleteFavoriteGame(gameDetail.id)
+                    } else {
+                        gameRepository.addFavoriteGame(gameDetail)
+                    }
+                    _uiState.value = DetailUiState.Loaded(gameDetail, !isFavorite)
+                } catch (e: Throwable) {
+                    //TODO: Handle error
+                }
+            }
         }
     }
 }

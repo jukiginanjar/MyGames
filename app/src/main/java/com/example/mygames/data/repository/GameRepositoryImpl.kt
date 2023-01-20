@@ -6,9 +6,12 @@ import com.example.mygames.data.model.Game
 import com.example.mygames.data.model.GameDetail
 import com.example.mygames.data.model.Page
 import com.example.mygames.data.source.database.FavoriteGameDao
+import com.example.mygames.data.source.database.FavoriteGameEntity
 import com.example.mygames.data.source.network.GameNetworkApi
 import com.example.mygames.data.source.network.GameResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GameRepositoryImpl @Inject constructor(
@@ -45,19 +48,41 @@ class GameRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getFavoriteGames(): List<Game> {
-        TODO("Not yet implemented")
+    override fun getFavoriteGames(): Flow<List<Game>> {
+        return favoriteGameDao.getFavoriteGames().map { entities ->
+            entities.map { entity ->
+                Game(
+                    id = entity.id,
+                    title = entity.title,
+                    releaseDate = entity.releaseDate,
+                    rating = entity.rating,
+                    thumbnailUrl = entity.thumbnailUrl
+                )
+            }
+        }
     }
 
-    override suspend fun addFavoriteGame(game: Game) {
-        TODO("Not yet implemented")
+    override suspend fun isFavoriteGame(gameId: Int): Boolean {
+        return favoriteGameDao.isFavoriteGame(gameId)
     }
 
-    override suspend fun deleteFavoriteGame(game: Game) {
-        TODO("Not yet implemented")
+    override suspend fun addFavoriteGame(game: GameDetail) {
+        favoriteGameDao.addFavoriteGame(
+            FavoriteGameEntity(
+                id = game.id,
+                title = game.title,
+                releaseDate = game.releaseDate,
+                rating = game.rating,
+                thumbnailUrl = game.thumbnailUrl
+            )
+        )
     }
 
-    fun GameResponse.Game.toGame(): Game {
+    override suspend fun deleteFavoriteGame(gameId: Int) {
+        favoriteGameDao.deleteFavoriteGame(gameId)
+    }
+
+    private fun GameResponse.Game.toGame(): Game {
         return Game(
             id ?: 0,
             name.orEmpty(),
