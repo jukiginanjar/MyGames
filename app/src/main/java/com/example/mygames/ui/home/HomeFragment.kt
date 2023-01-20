@@ -16,8 +16,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.mygames.R
 import com.example.mygames.databinding.FragmentHomeBinding
-import com.example.mygames.ui.GameListAdapter
 import com.example.mygames.ui.detail.DetailActivity
+import com.example.mygames.ui.shared.GameListAdapter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest

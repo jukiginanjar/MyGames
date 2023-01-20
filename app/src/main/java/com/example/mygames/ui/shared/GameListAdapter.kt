@@ -1,4 +1,4 @@
-package com.example.mygames.ui
+package com.example.mygames.ui.shared
 
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +14,7 @@ import com.example.mygames.databinding.LayoutGameItemBinding
 
 class GameListAdapter(
     private val onClick: (Game) -> Unit,
-    private val onLastItemReached: () -> Unit
+    private val onLastItemReached: (() -> Unit)? = null
 ) :
     ListAdapter<Game, GameListAdapter.GameViewHolder>(FlowerDiffCallback) {
 
@@ -56,7 +56,7 @@ class GameListAdapter(
 
         val isLastPosition = (itemCount - position) == 1
         if (isLastPosition) {
-            onLastItemReached.invoke()
+            onLastItemReached?.invoke()
         }
     }
 }
