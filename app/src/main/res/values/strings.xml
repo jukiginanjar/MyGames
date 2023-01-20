@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MyGames</string>
+    <string name="title_home">Home</string>
+    <string name="topbar_title_home">Games For You</string>
+    <string name="title_favorite">Favorite</string>
+    <string name="topbar_title_favorite">Favorite Games</string>
+    <string name="api_key">3556507460b042f28511ced4470ca569</string>
+    <string name="release_date_prefix">Release date %1$s</string>
+    <string name="home_search_hint">Search</string>
+</resources>
