@@ -3,6 +3,7 @@ package com.example.mygames.data.repository
 import android.content.Context
 import com.example.mygames.R
 import com.example.mygames.data.model.Game
+import com.example.mygames.data.model.GameDetail
 import com.example.mygames.data.model.Page
 import com.example.mygames.data.source.database.FavoriteGameDao
 import com.example.mygames.data.source.network.GameNetworkApi
@@ -27,8 +28,21 @@ class GameRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun findGames(keyword: String, page: Int): Page<Game> {
-        TODO("Not yet implemented")
+    override suspend fun getGameDetail(gameId: Int): GameDetail {
+        val result =
+            gameNetworkApi.getGameDetail(gameId, applicationContext.getString(R.string.api_key))
+        return result.run {
+            GameDetail(
+                id = id ?: 0,
+                title = name.orEmpty(),
+                releaseDate = released.orEmpty(),
+                rating = rating ?: 0.0,
+                playtime = playtime ?: 0,
+                thumbnailUrl = backgroundImage.orEmpty(),
+                description = description.orEmpty(),
+                developer = developers.firstOrNull()?.name.orEmpty()
+            )
+        }
     }
 
     override suspend fun getFavoriteGames(): List<Game> {

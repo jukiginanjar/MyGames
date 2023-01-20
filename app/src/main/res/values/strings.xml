@@ -6,5 +6,7 @@
     <string name="topbar_title_favorite">Favorite Games</string>
     <string name="api_key">3556507460b042f28511ced4470ca569</string>
     <string name="release_date_prefix">Release date %1$s</string>
+    <string name="detail_played_suffix">%1$d played</string>
     <string name="home_search_hint">Search</string>
+    <string name="topbar_title_detail">Detail</string>
 </resources>

@@ -1,11 +1,11 @@
 package com.example.mygames.data.model
 
-import java.util.*
-
 data class GameDetail(
+    val id: Int,
     val title: String,
-    val releaseDate: Date,
+    val releaseDate: String,
     val rating: Double,
+    val playtime: Int,
     val thumbnailUrl: String,
     val description: String,
     val developer: String

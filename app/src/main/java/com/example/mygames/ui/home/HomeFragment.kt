@@ -3,6 +3,7 @@ package com.example.mygames.ui.home
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.mygames.R
 import com.example.mygames.databinding.FragmentHomeBinding
 import com.example.mygames.ui.GameListAdapter
+import com.example.mygames.ui.detail.DetailActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -100,7 +102,9 @@ class HomeFragment : Fragment() {
 
     private fun buildGameListAdapter() = GameListAdapter(
         onClick = {
-
+            activity?.apply {
+                startActivity(Intent(this, DetailActivity::class.java).putExtra("game_id", it.id))
+            }
         },
         onLastItemReached = {
             viewModel.getNextGames()
@@ -141,8 +145,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun Activity.dismissKeyboard() {
-        val inputMethodManager = getSystemService( Context.INPUT_METHOD_SERVICE ) as InputMethodManager
-        if( inputMethodManager.isAcceptingText )
-            inputMethodManager.hideSoftInputFromWindow( this.currentFocus?.windowToken, /*flags:*/ 0)
+        val inputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (inputMethodManager.isAcceptingText)
+            inputMethodManager.hideSoftInputFromWindow(this.currentFocus?.windowToken, /*flags:*/ 0)
     }
 }
